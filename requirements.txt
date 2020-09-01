@@ -1,0 +1,7 @@
+numpy
+backtester
+pandas
+sklearn
+scikit-learn
+matplotlib
+scipy

@@ -1,12 +1,8 @@
-import pandas as pd
-import numpy as np
 import math
-from scipy.stats import norm
+import numpy as np
+import pandas as pd
 from numpy.random import Generator, PCG64
-import time
-from scipy.fftpack import fft
-import matplotlib.pyplot as plt
-from fbm import FBM
+from scipy.stats import norm
 
 
 def BSDivCallValue(sigma, S0, K, r, delta, T):
@@ -70,4 +66,4 @@ if __name__ == '__main__':
                                "H": [0.2, 0.5, 0.6, 0.9],
                                "Monte Carlo Price": [MC_H02, MC_H05, MC_H06, MC_H09]})
 
-    MC_results.to_csv(r"\Users\diyan\Documents\WQU\Capstone\Develop\options.csv", index=False)
+    print(MC_results)

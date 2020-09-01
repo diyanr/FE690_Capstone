@@ -1,12 +1,9 @@
-import pandas as pd
-import numpy as np
 import math
-from scipy.stats import norm
-from numpy.random import Generator, PCG64
-import time
-from scipy.fftpack import fft
+
 import matplotlib.pyplot as plt
-from fbm import FBM
+import numpy as np
+from numpy.random import Generator, PCG64
+from scipy.fftpack import fft
 
 
 def covariance(i, H):
@@ -32,7 +29,7 @@ def computeE(N, H):
     return fft(row).real
 
 
-def computeW(eigenvals, N, H):
+def computeW(eigenvals, N):
     """
     Compute W=Q*V
     """
@@ -70,7 +67,7 @@ def fbmDH(n, H, T):
     E = computeE(N, H)
 
     # STEP 2: Compute  W = Q*V
-    W = computeW(E, N, H)
+    W = computeW(E, N)
 
     # STEP 3: Compute Z = QE^(1/2)W
     Z = fft(W)
@@ -80,30 +77,6 @@ def fbmDH(n, H, T):
 
     # return the fractional Brownian motion
     return np.insert(fgn.cumsum(), [0], 0)
-
-
-def hurst_f(input_ts, lags_to_test=100):
-    """
-    interpretation of return value
-    hurst < 0.5 - input_ts is mean reverting
-    hurst = 0.5 - input_ts is effectively random/geometric brownian motion
-    hurst > 0.5 - input_ts is trending
-    """
-    tau = []
-    lagvec = []
-    #  Step through the different lags
-    for lag in range(2, lags_to_test):
-        #  produce price difference with lag
-        pp = np.subtract(input_ts[lag:], input_ts[:-lag])
-        #  Write the different lags into a vector
-        lagvec.append(lag)
-        #  Calculate the variance of the difference vector
-        tau.append(np.sqrt(np.std(pp)))
-        #  linear fit to double-log graph (gives power)
-    m = np.polyfit(np.log10(lagvec), np.log10(tau), 1)
-    # calculate hurst
-    hurst_ind = m[0] * 2
-    return hurst_ind
 
 
 if __name__ == '__main__':
